@@ -14,6 +14,8 @@
     "node-sass": "^4.13.1",
     "polka": "^0.5.2",
     "postcss": "^7.0.27",
+    "prettier": "^1.19.1",
+    "prettier-plugin-svelte": "^0.7.0",
     "rollup": "^1.26.3",
     "rollup-plugin-hot": "^0.0.10",
     "rollup-plugin-livereload": "^1.0.0",
@@ -24,7 +26,8 @@
     "sapper": "^0.27.10",
     "sirv-cli": "^0.4.4",
     "svelte": "^3.19.1",
-    "svelte-preprocess": "^3.4.0"
+    "svelte-preprocess": "^3.4.0",
+    "tone": "^13.8.25"
   },
   "scripts": {
     "build": "rollup -c rollup.config-dev.js",
