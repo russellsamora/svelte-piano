@@ -1,4 +1,7 @@
 <style>
+  .piano {
+    margin-top: 2rem;
+  }
   .key p {
     margin: 0;
     font-family: monospace;
@@ -31,12 +34,12 @@
   let sampler;
 
   let selected;
-  let melody;
+  let part;
 
   onMount(async () => {
     const module = await import("tone");
     Tone = module.default;
-    synth = new Tone.Synth().toMaster();
+    // synth = new Tone.Synth().toMaster();
     sampler = new Tone.Sampler(
       {
         C2: "C2.mp3",
@@ -58,25 +61,27 @@
         C5: "C5.mp3"
       },
       {
-        release: 1,
+        release: 0.5,
         baseUrl: "assets/notes/"
       }
     ).toMaster();
+    part = new Tone.Part(() => {}, []);
   });
 
   $: level = levels.find(d => d.title === selected);
-  $: if (Tone && level) {
+  $: if (part && level) {
     Tone.Transport.stop();
-    if (melody) melody.dispose();
+    part.removeAll();
     const values = midiToNotation(level.sequence);
-    melody = new Tone.Part((time, value) => {
+    part = new Tone.Part((time, value) => {
       sampler.triggerAttackRelease(value.note, value.duration, time);
     }, values).start(0);
 
-    melody.humanize = true;
+    part.humanize = true;
 
     //set the transport
     Tone.Transport.bpm.value = level.tempo;
+    console.log(Tone.Transport.bpm.value);
     Tone.Transport.start();
   }
 
@@ -84,8 +89,7 @@
   const highC = 84;
   let piano = pianoData.filter(d => +d.midi >= lowC && +d.midi <= highC);
 
-  function click(note, octave) {
-    // synth.triggerAttackRelease(`${note}${octave}`, "16n");
+  function play(note, octave) {
     sampler.triggerAttackRelease(`${note}${octave}`, "16n");
   }
 </script>
