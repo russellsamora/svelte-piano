@@ -81,7 +81,8 @@
 
     //set the transport
     Tone.Transport.bpm.value = level.tempo;
-    console.log(Tone.Transport.bpm.value);
+    Tone.Transport.timeSignature = level.sig || 4;
+    console.log(level.sig);
     Tone.Transport.start();
   }
 
