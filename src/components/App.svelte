@@ -29,12 +29,18 @@
   import pianoData from "../data/piano.csv";
   import levels from "../data/levels.json";
 
+  pianoData.reverse();
+
   let Tone;
   let synth;
   let sampler;
 
   let selected;
   let part;
+
+  const lowC = 36;
+  const highC = 84;
+  let piano = pianoData.filter(d => +d.midi >= lowC && +d.midi <= highC);
 
   onMount(async () => {
     const module = await import("tone");
@@ -77,18 +83,11 @@
       sampler.triggerAttackRelease(value.note, value.duration, time);
     }, values).start(0);
 
-    part.humanize = true;
-
     //set the transport
     Tone.Transport.bpm.value = level.tempo;
     Tone.Transport.timeSignature = level.sig || 4;
-    console.log(level.sig);
     Tone.Transport.start();
   }
-
-  const lowC = 36;
-  const highC = 84;
-  let piano = pianoData.filter(d => +d.midi >= lowC && +d.midi <= highC);
 
   function play(note, octave) {
     sampler.triggerAttackRelease(`${note}${octave}`, "16n");
@@ -102,7 +101,7 @@
   {/each}
 </select>
 <div class="piano">
-  {#each piano.reverse() as { midi, note, octave }}
+  {#each piano as { midi, note, octave } (midi)}
     <button
       class="key"
       class:sharp="{note.includes('#')}"

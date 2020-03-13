@@ -33,7 +33,7 @@ function parseDuration({ value, sequence }) {
 }
 
 function parseSequence(str) {
-  const notes = str.split(".");
+  const notes = str.split(",");
   return notes.map(d => {
     const [midi, duration] = d.split("-").map(d => +d);
     return { midi, duration };
@@ -52,7 +52,7 @@ function cleanData(data) {
         apm: +d.apm,
         est: +d.est,
         tempo: +d.tempo,
-        sig: d.sig ? d.sig.split(".").map(d => +d) : 4,
+        sig: d.sig ? d.sig.split(",").map(d => +d) : 4,
         sequence,
         range: {
           midis: parseMidi({ value: d.range_midi, sequence }),

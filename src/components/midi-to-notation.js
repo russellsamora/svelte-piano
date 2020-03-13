@@ -6,7 +6,7 @@ export default function midiToNotation(arr) {
   const a = arr.map(({ midi, duration }) => {
     const match = pianoData.find(p => +p.midi === midi);
     const note = match ? `${match.note}${match.octave}` : null;
-    duration = `${Math.pow(2, duration)}n`;
+    duration = `${Math.floor(Math.pow(2, duration))}n`;
     return { note, duration };
   });
 
